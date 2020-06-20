@@ -126,7 +126,7 @@ def parse_cert(raw_bytes):
 
 def dump_cert(aboot, cert_offset, filename):
     # DIY ASN.1
-    print(aboot[cert_offset:cert_offset+10].hex())
+    #print(aboot[cert_offset:cert_offset+10].hex())
     if aboot[cert_offset] == 0x30 and aboot[cert_offset + 1] == 0x82:
         seq_len = struct.unpack('> H', aboot[cert_offset + 2:cert_offset + 4])[0]
         cert_len = seq_len + 4
