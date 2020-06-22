@@ -1,53 +1,58 @@
-# Android bootloader (aboot) parser
+# Android aboot and ELF image parser
 
-Script to parse Android bootloader (aboot) images, extract certificates and verify image signature.
+Script to parse Android images (aboot and ELF), extract certificates and verify image signature.
 
 May not work on aboot from latest devices. Signature verification follows the 
 'Secure Boot and Image Authentication Technical Overview' whitepaper by Qualcomm.
-Cf. https://www.qualcomm.com/documents/secure-boot-and-image-authentication-technical-overview
+Cf. https://www.qualcomm.com/documents/secure-boot-and-image-authentication-technical-overview-v10
 
 aboot header format as described in http://newandroidbook.com/Articles/aboot.html
 See above article for more details about aboot. 
 
-Inspired by https://github.com/kayrus/kc_s701_break_free
+Based on work from https://github.com/nelenkov/aboot-parser
 
 Tested on aboot from
  * Nexus 5
  * Kyocera Brigadier 
  * Kyocera KC-S701
+ * LG L70
+ * LG G6
 
 Nexus 5X/6P use the ELF format, as described in QC whitepaper. 
-Currently unsupported by this script.
+Currently not tested by this version of script.
 
 Usage:
 
 ```
-$ ./parse-aboot.py n5-aboot.img 
-aboot image n5-aboot.img, len=339180
+$ ./parse-aboot.py elf.img 
+aboot image elf.img, len=694784
+
+ELF file format found!
+
 aboot header:
 ----------------------------------------
-magic:             0x00000005
+magic:             0x00000000
 version:           0x00000003
 NULL:              0x00000000
-ImgBase:           0x0f900000
-ImgSize:           0x00052cc4 (339140)
-CodeSize:          0x000513c4 (332740)
-ImgBaseCodeSize:   0x0f9513c4
+ImgBase:           0x8f68e028
+ImgSize:           0x00001980 (6528)
+CodeSize:          0x00000080 (128)
+ImgBaseCodeSize:   0x8f68e0a8
 SigSize:           0x00000100 (256)
-CodeSigOffset:     0x0f9514c4
+CodeSigOffset:     0x8f68e1a8
 Certs size:        0x00001800 (6144)
 
-SigOffset:         0x000513ec
+SigOffset:         0x000000a8
 
 Dumping all certificates...
-cert 1: cert-1.cer, size: 1186
-cert 2: cert-2.cer, size: 1025
-cert 3: cert-3.cer, size:  922
-Total cert size:          3133
+cert 1: cert-1.cer, size: 1168
+cert 2: cert-2.cer, size: 1129
+cert 3: cert-3.cer, size:  941
+Total cert size         : 3238
 
 Trying to calculate image hash...
-Expected: c8f94b5762b14439647192d82501331093c079154a379048e2d9ef3166d7587b (32)
-My hash:  c8f94b5762b14439647192d82501331093c079154a379048e2d9ef3166d7587b (32)
+Expected: 826c971a5561de2ecc83459f222782a4044933d674e9d401d69176321e128d08 (32)
+My hash:  826c971a5561de2ecc83459f222782a4044933d674e9d401d69176321e128d08 (32)
 Hashes match
 ```
 
