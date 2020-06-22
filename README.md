@@ -16,9 +16,11 @@ Tested on aboot from
  * Kyocera Brigadier 
  * Kyocera KC-S701
  * LG L70
+ 
  Tested on all ELF images from
  * LG G6
-
+ * LG Stylo 4
+ 
 Nexus 5X/6P use the ELF format, as described in QC whitepaper. 
 Currently not tested by this version of script.
 
