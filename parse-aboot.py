@@ -17,6 +17,7 @@ ABOOT_MAGIC = b'\x00\x00\x00\x05'
 
 SHA1_HASH_SIZE = 20
 SHA256_HASH_SIZE = 32
+ELF = 0
 
 class AbootHeader:
     def parse(self, aboot):
@@ -121,7 +122,6 @@ def parse_cert(raw_bytes):
     mod = rsadata.getComponentByName("modulus")
     pub_exp = rsadata.getComponentByName("publicExponent")
     result.pub_key = rsa.PublicKey(int(mod), int(pub_exp))
-
     return result
 
 def dump_cert(aboot, cert_offset, filename):
@@ -246,12 +246,17 @@ if __name__ == '__main__':
     with open(sys.argv[1], 'rb') as f:
        aboot = bytes(f.read())
     print('aboot image %s, len=%d' % (sys.argv[1], len(aboot)))
-    
+
+    if aboot[0:4].hex() == '7f454c46':
+        print('\nELF file format found!\n')
+        aboot = aboot[4096:len(aboot)]
+        ELF = 1
+
     header = AbootHeader()
     header.parse(aboot)
     header.dump()
 
-    if header.magic != 0x5:
+    if header.magic != 0x5 and header.magic != 0x0:
         print('Unrecognized format, magic=0x%04x' % header.magic)
         sys.exit(1)
 
