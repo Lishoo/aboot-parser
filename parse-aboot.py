@@ -256,7 +256,7 @@ if __name__ == '__main__':
     header.parse(aboot)
     header.dump()
 
-    if header.magic != 0x5 and header.magic != 0x0:
+    if ELF == 0 and header.magic != 0x5:
         print('Unrecognized format, magic=0x%04x' % header.magic)
         sys.exit(1)
 
