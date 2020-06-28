@@ -260,6 +260,10 @@ if __name__ == '__main__':
         print('Unrecognized format, magic=0x%04x' % header.magic)
         sys.exit(1)
 
+    if header.version != 0x3:
+        print('unsupported version, version=0x%04x' % header.version)
+        sys.exit(1)
+
     sig = dump_signature(aboot, header, 'signature.bin')
 
     if (header.cert_size == 0):
